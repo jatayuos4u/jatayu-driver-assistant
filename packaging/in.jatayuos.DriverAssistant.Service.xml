@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Implemented on the unprivileged USER SESSION bus only. -->
+<node>
+  <interface name="in.jatayuos.DriverAssistant1">
+    <method name="GetCapabilities"><arg name="capabilities" type="a{sv}" direction="out"/></method>
+    <method name="RequestInstallation">
+      <arg name="package" type="s" direction="in"/>
+      <arg name="device_id" type="s" direction="in"/>
+      <arg name="evidence_id" type="s" direction="in"/>
+      <arg name="accepted" type="b" direction="out"/>
+    </method>
+  </interface>
+</node>

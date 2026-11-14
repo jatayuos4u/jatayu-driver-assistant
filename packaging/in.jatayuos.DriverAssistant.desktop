@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Jatayu Driver Assistant
+Name[hi]=जटायु ड्राइवर असिस्टेंट
+Comment=Inspect hardware and kernel drivers
+Comment[hi]=हार्डवेयर और ड्राइवर की जानकारी देखें
+Exec=jatayu-driver-assistant
+Icon=in.jatayuos.DriverAssistant
+Categories=System;Settings;HardwareSettings;
+Terminal=false
+StartupNotify=true

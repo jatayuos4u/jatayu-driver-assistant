@@ -1,0 +1,6 @@
+<node name="/in/jatayuos/DriverAssistant/System">
+  <interface name="in.jatayuos.DriverAssistant.System1">
+    <method name="GetCapabilities"><arg name="capabilities" type="a{sv}" direction="out"/></method>
+    <method name="RequestAuthorization"><arg name="result" type="a{sv}" direction="out"/></method>
+  </interface>
+</node>

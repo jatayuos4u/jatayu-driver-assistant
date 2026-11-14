@@ -1,0 +1,8 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: jatayu-driver-assistant
+Source: https://github.com/jatayuos4u/jatayu-driver-assistant
+
+Files: *
+Copyright: 2026 JatayuOS Project
+License: GPL-3+
+ See /usr/share/common-licenses/GPL-3.

@@ -1,0 +1,11 @@
+#!/usr/bin/make -f
+export PYBUILD_TEST_PYTEST = 1
+
+%:
+	dh $@ --buildsystem=pybuild --with python3
+
+# The source-only packaging/ XML policy fixtures are not copied into
+# pybuild's isolated wheel build directory. Run the full suite from the
+# source tree, where those fixtures are available.
+override_dh_auto_test:
+	python3 -m pytest -q tests/

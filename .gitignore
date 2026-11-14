@@ -1,0 +1,23 @@
+# Python build artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+.eggs/
+build/
+dist/
+.pybuild/
+*.whl
+# Debian build artifacts
+*.deb
+*.buildinfo
+*.changes
+*.dsc
+*.tar.*
+# Local environments and IDE
+.venv/
+venv/
+.idea/
+.vscode/
+# Runtime files
+*.log

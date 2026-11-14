@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jatayu-driver-assistant"
+version = "1.2.3"
+description = "Read-only hardware diagnostics and driver recommendations for JatayuOS"
+requires-python = ">=3.11"
+license = "GPL-3.0-or-later"
+authors = [{name = "JatayuOS Project"}]
+
+[project.scripts]
+jatayu-driver-assistant = "jatayu_driver_assistant.app:main"
+
+[tool.setuptools.packages.find]
+include = ["jatayu_driver_assistant*"]
+
+[tool.setuptools.package-data]
+jatayu_driver_assistant = []

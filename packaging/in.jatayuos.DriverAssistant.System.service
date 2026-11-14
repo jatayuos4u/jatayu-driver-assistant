@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=in.jatayuos.DriverAssistant.System
+Exec=/usr/bin/jatayu-driver-assistant-system-service
+User=root

@@ -1,0 +1,15 @@
+Source: jatayu-driver-assistant
+Section: utils
+Priority: optional
+Maintainer: JatayuOS Project <maintainers@jatayuos.in>
+Build-Depends: debhelper-compat (= 13), dh-python, pybuild-plugin-pyproject, python3-all, python3-setuptools, python3-pytest
+Standards-Version: 4.7.0
+Rules-Requires-Root: no
+
+Package: jatayu-driver-assistant
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends}, python3-pyside6.qtcore, python3-pyside6.qtwidgets, pciutils
+Description: Graphical hardware and driver diagnostic assistant for JatayuOS
+ Read-only PCI, USB, network, sound and Bluetooth hardware discovery
+ with English and Hindi user interface and conservative recommendations.
+ No driver installation, removal or repair is performed.

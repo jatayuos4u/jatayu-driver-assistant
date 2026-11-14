@@ -1,0 +1,340 @@
+jatayu-driver-assistant (1.2.3-1) unstable; urgency=medium
+
+  * Basic Edition packaging: do not install legacy D-Bus services or Polkit policy.
+  * Remove unnecessary privileged service entry points and package dependencies.
+  * Refresh GitHub source documentation and licensing metadata.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Sat, 14 Nov 2026 20:00:00 +0530
+
+jatayu-driver-assistant (1.2.2-1) unstable; urgency=medium
+
+  * Clarify Overview versus physical-device recommendation counts.
+  * Replace outdated Alpha preview text with Basic Edition notice.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Sat, 14 Nov 2026 13:45:00 +0530
+
+jatayu-driver-assistant (1.2.1-1) unstable; urgency=medium
+
+  * Group physical-device recommendations by status and prioritize review.
+  * Exclude virtual network interfaces and show shorter hardware names.
+  * Add English and Hindi status filters and summary.
+  * Keep all operations read-only.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Sat, 14 Nov 2026 15:00:00 +0530
+
+jatayu-driver-assistant (1.2.0-1) unstable; urgency=medium
+
+  * Simplify navigation to Overview, Devices, Diagnostics, Recommendations, Help and About.
+  * Remove Repair Center and Testing Center from the user interface.
+  * Show device-specific read-only recommendations with transparent confidence.
+  * Keep installation disabled; no simulated installation prompts on recommendations.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Sat, 14 Nov 2026 14:30:00 +0530
+
+jatayu-driver-assistant (1.1.0-1) unstable; urgency=medium
+
+  * Replace synthetic Testing Center UI with real read-only local hardware checks.
+  * Add live network, Wi-Fi, graphics, audio, and Bluetooth diagnostics.
+  * Retain restricted journal handling and prohibit unsafe package installation.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Sat, 14 Nov 2026 14:00:00 +0530
+
+jatayu-driver-assistant (1.0.0-1) unstable; urgency=medium
+
+  * Add bilingual offline Help Center with safety and troubleshooting guidance.
+  * Finalize read-only diagnostics release; driver installation remains disabled.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Sat, 14 Nov 2026 13:00:00 +0530
+
+jatayu-driver-assistant (0.9.3-1) unstable; urgency=medium
+
+  * Distinguish restricted kernel journal access from unavailable logs.
+  * Classify Wi-Fi firmware load success, firmware failure hints and unrelated i915 warnings.
+  * Preserve read-only unprivileged diagnostics and bilingual user feedback.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Sat, 14 Nov 2026 12:30:00 +0530
+
+jatayu-driver-assistant (0.9.2-1) unstable; urgency=medium
+
+  * Add bounded read-only Wi-Fi firmware error hints from current boot journal.
+  * Report unavailable journal separately; never infer hardware-specific package needs.
+  * Improve English/Hindi diagnostics; keep all installations disabled.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Sat, 14 Nov 2026 16:00:00 +0530
+
+jatayu-driver-assistant (0.9.1-1) unstable; urgency=medium
+
+  * Add read-only NetworkManager state and Wi-Fi RF-kill diagnostics.
+  * Improve bilingual Wi-Fi assessment and preserve disabled installation.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Sat, 14 Nov 2026 14:00:00 +0530
+
+jatayu-driver-assistant (0.9.0-1) unstable; urgency=medium
+
+  * Add bilingual read-only Wi-Fi interface diagnostics via sysfs.
+  * Report interface operational state and bound kernel driver without claiming connectivity.
+  * Preserve fail-closed package recommendations and disabled installation.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Sat, 14 Nov 2026 13:00:00 +0530
+
+jatayu-driver-assistant (0.8.9-1) unstable; urgency=medium
+
+  * Localize read-only device details and close control in Hindi.
+  * Add optional bounded asynchronous dpkg installed-status lookup for package hints.
+  * Keep firmware matching unverified and real installation disabled.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Sat, 14 Nov 2026 12:00:00 +0530
+
+jatayu-driver-assistant (0.8.8-1) unstable; urgency=medium
+
+  * Add bilingual read-only PCI device details dialog on double-click.
+  * Keep evidence status and unverified package hints visible per device.
+  * Preserve fail-closed recommendations and disabled installation.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Sat, 14 Nov 2026 10:30:00 +0530
+
+jatayu-driver-assistant (0.8.7-1) unstable; urgency=medium
+
+  * Clarify that no matching kernel log entry is not proof of device health.
+  * State the current-boot, last-4000-record inspection scope in the UI.
+  * Export explicit evidence scope and interpretation in hardware JSON reports.
+  * Improve English/Hindi evidence wording while keeping installation disabled.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Sat, 14 Nov 2026 10:15:00 +0530
+
+jatayu-driver-assistant (0.8.6-1) unstable; urgency=medium
+
+  * Run kernel evidence inspection without blocking the Qt interface.
+  * Show bilingual progress, completion summary, and failure feedback.
+  * Restore PCI address visibility after inspection and improve table scrolling.
+  * Keep installation disabled and all evidence unverified.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Sat, 14 Nov 2026 09:30:00 +0530
+
+jatayu-driver-assistant (0.8.5-1) unstable; urgency=medium
+
+  * Add read-only exact PCI address and driver-family firmware failure correlation.
+  * Expose bilingual kernel evidence status and export it in JSON reports.
+  * Fail closed on inaccessible kernel logs; retain disabled installation.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Sat, 14 Nov 2026 11:00:00 +0530
+
+jatayu-driver-assistant (0.8.4-1) unstable; urgency=medium
+
+  * Make device-specific APT inspection fail closed without verified evidence.
+  * Label generic APT analysis separately from hardware recommendations.
+  * Add explicit recommendation status, row header cleanup, and bilingual UI.
+  * Keep all package installation and removal disabled.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Sat, 14 Nov 2026 10:30:00 +0530
+
+jatayu-driver-assistant (0.8.3-1) unstable; urgency=medium
+
+  * Add searchable, filterable PCI hardware table and read-only JSON export.
+  * Improve APT analysis dialog resizing and safety-warning readability.
+  * Extend bilingual hardware UI and add security-oriented tests.
+  * Keep privileged driver installation disabled.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Sat, 14 Nov 2026 10:00:00 +0530
+
+jatayu-driver-assistant (0.8.2-1) unstable; urgency=medium
+
+  * Add read-only PCI hardware compatibility hints with conservative confidence.
+  * Replace APT text message with structured, scrollable bilingual review dialog.
+  * Preserve existing diagnostics, synthetic previews, and disabled installation.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Sat, 14 Nov 2026 09:00:00 +0530
+
+jatayu-driver-assistant (0.8.1-1) unstable; urgency=medium
+
+  * Report locally installed firmware package version from dpkg-query.
+  * Distinguish already-installed empty transactions from blocked simulations.
+  * Prefer allowlisted firmware hints from accessible kernel log evidence.
+  * Keep real installation disabled; evidence hints are not device matches.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 23:55:00 +0530
+
+jatayu-driver-assistant (0.8.0-1) unstable; urgency=medium
+
+  * Add unprivileged, bounded, read-only live APT simulation inspection.
+  * Add KDE Repair Center asynchronous APT inspection button.
+  * Keep real installation disabled and separate synthetic preview fixtures.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 23:15:00 +0530
+
+jatayu-driver-assistant (0.7.3-1) unstable; urgency=medium
+
+  * Localize recognized synthetic operation and warning strings in the Repair Center.
+  * Preserve machine-readable JSON payloads and transaction fingerprints unchanged.
+  * Add language regression tests for presentation-only translations.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 22:55:00 +0530
+
+jatayu-driver-assistant (0.7.2-1) unstable; urgency=medium
+
+  * Replace raw transaction preview with accessible structured review cards.
+  * Add bilingual state labels, warning panels, and persistent safety notice.
+  * Preserve synthetic JSON export and disabled installation behavior.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 22:45:00 +0530
+
+jatayu-driver-assistant (0.7.1-1) unstable; urgency=medium
+
+  * Add bilingual Repair Center synthetic transaction preview and JSON export.
+  * Demonstrate blocked unsafe operations without executing APT or modifying packages.
+  * Preserve disabled installation and Polkit authorization probe.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 22:30:00 +0530
+
+jatayu-driver-assistant (0.7.0-1) unstable; urgency=medium
+
+  * Add deterministic, read-only firmware transaction plan and audit record.
+  * Reject unknown operations, removals, non-allowlisted packages, and truncated previews.
+  * Preserve the tested Polkit probe; no installation D-Bus method is exposed.
+  * Add fail-closed security regression tests.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 22:00:00 +0530
+
+jatayu-driver-assistant (0.6.1-2) unstable; urgency=medium
+
+  * Fix Debian pybuild test failure by running source-fixture tests from the source tree.
+  * Preserve all 73 tests and the existing read-only authorization boundary.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 21:30:00 +0530
+
+jatayu-driver-assistant (0.6.1-1) unstable; urgency=medium
+
+  * Add a fixed-action, one-shot Polkit authorization probe to the system D-Bus service.
+  * Install a restrictive Polkit policy requiring active-session administrator authentication.
+  * Log authorization outcomes and bind checks to the unique D-Bus caller.
+  * Keep package, driver, firmware, and filesystem mutation methods absent.
+  * Add authorization, policy, D-Bus interface, and fail-closed regression tests.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 21:00:00 +0530
+
+jatayu-driver-assistant (0.6.0-1) unstable; urgency=medium
+
+  * Add read-only system D-Bus capability service with default-restrictive policy.
+  * Preserve session service; do not expose privileged installation methods.
+  * Correct user interface and report version strings.
+  * Add service packaging and security regression tests.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 20:30:00 +0530
+
+jatayu-driver-assistant (0.5.1-2) unstable; urgency=medium
+
+  * Keep D-Bus activation descriptor available to tests in isolated pybuild trees.
+  * Verify packaged descriptor matches Debian-installed source descriptor.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 19:00:00 +0530
+
+jatayu-driver-assistant (0.5.1-1) unstable; urgency=medium
+
+  * Add actual unprivileged D-Bus session service and activation descriptor.
+  * Expose read-only capability query; reject every installation request.
+  * No Polkit policy, system bus service, or privileged operations yet.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 20:00:00 +0530
+
+jatayu-driver-assistant (0.5.0-1) unstable; urgency=medium
+
+  * Add fail-closed unprivileged service protocol prototype.
+  * Document proposed D-Bus interface and security prerequisites.
+  * Keep driver installation and reinstallation disabled.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 19:00:00 +0530
+
+jatayu-driver-assistant (0.4.2-1) unstable; urgency=medium
+
+  * Add a non-privileged backend protocol and strict request validation.
+  * Add transaction-review security regression tests.
+  * Display backend readiness in the Repair Center.
+  * Keep all system-changing operations disabled.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 20:00:00 +0530
+
+jatayu-driver-assistant (0.4.1-1) unstable; urgency=medium
+
+  * Add isolated, clearly labeled synthetic driver testing center.
+  * Provide synthetic Wi-Fi, graphics, and healthy scenarios with JSON export.
+  * Do not modify drivers or feed synthetic evidence into real diagnostics.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 19:00:00 +0530
+
+jatayu-driver-assistant (0.4.1-1) unstable; urgency=medium
+
+  * Add a bilingual graphical Repair Center with evidence-aware guidance.
+  * Explicitly keep privileged driver installation disabled.
+  * Update application metadata and report version.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 19:00:00 +0530
+
+jatayu-driver-assistant (0.3.2-1) unstable; urgency=medium
+
+  * Redesign About page with JatayuOS information, website, and GitHub links.
+  * Provide English and Hindi project information.
+  * Retain read-only package simulation; no privileged installation.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 18:55:00 +0530
+
+jatayu-driver-assistant (0.3.1-1) unstable; urgency=medium
+
+  * Replace modal text message with scrollable graphical review dialog.
+  * Add advisory package/evidence validation for future secure backend.
+  * Keep installation disabled pending privileged-service audit.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 15:00:00 +0530
+
+jatayu-driver-assistant (0.3.0-1) unstable; urgency=medium
+
+  * Add conservative transaction policy checks to firmware previews.
+  * Show package operations and review warnings in graphical dialog.
+  * Keep privileged package installation disabled pending security review.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 14:00:00 +0530
+
+jatayu-driver-assistant (0.2.1-1) unstable; urgency=medium
+
+  * Add allowlisted, evidence-based firmware package recommendations.
+  * Add read-only APT package transaction simulations.
+  * Add graphical Recommendations page; installation remains disabled.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 13:00:00 +0530
+
+jatayu-driver-assistant (0.2.0-1) unstable; urgency=medium
+
+  * Add unprivileged firmware failure evidence from accessible kernel logs.
+  * Show cautious Debian repository package hints without installing anything.
+  * Run firmware scan off the GUI thread and include findings in JSON export.
+  * Remain read-only; privileged repair is not implemented in this alpha.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 15:00:00 +0530
+
+jatayu-driver-assistant (0.1.4-1) unstable; urgency=medium
+
+  * Add read-only diagnostic center with evidence-based PCI and network findings.
+  * Include diagnostic findings in exported JSON reports.
+  * Add diagnostics tests; no privileged repair operations.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 14:00:00 +0530
+
+jatayu-driver-assistant (0.1.3-1) unstable; urgency=medium
+
+  * Prevent device preview text collisions with elided, tooltip-enabled rows.
+  * Make hardware preview scrollable and improve driver status explanation.
+  * Preserve safe read-only behavior for alpha testing.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 13:30:00 +0530
+
+jatayu-driver-assistant (0.1.2-1) unstable; urgency=medium
+
+  * Fix dashboard preview visibility and show explicit binding states.
+  * Add branded scalable icon and classification regression tests.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 12:00:00 +0530
+
+jatayu-driver-assistant (0.1.1-1) unstable; urgency=medium
+
+  * Initial read-only alpha release.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Fri, 13 Nov 2026 11:50:00 +0530
