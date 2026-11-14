@@ -17,4 +17,4 @@ jobs:
           set -eu
           gh release view v1.2.3 --repo "$GITHUB_REPOSITORY" --json isPrerelease,assets,url
           gh release edit v1.2.3 --repo "$GITHUB_REPOSITORY" --prerelease=false --latest
-          gh release view v1.2.3 --repo "$GITHUB_REPOSITORY" --json isPrerelease,isLatest,url
+          gh release view v1.2.3 --repo "$GITHUB_REPOSITORY" --json isPrerelease,url
