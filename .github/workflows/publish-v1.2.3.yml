@@ -1,0 +1,85 @@
+name: Build and publish v1.2.3 testing release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-v1.2.3.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:trixie
+    steps:
+      - name: Install Debian packaging and test tools
+        run: |
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            ca-certificates git gh build-essential dpkg-dev debhelper dh-python \
+            pybuild-plugin-pyproject python3-all python3-setuptools \
+            python3-pytest python3-pyside6.qtcore python3-pyside6.qtwidgets \
+            pciutils zip
+      - name: Check out exact release source
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Run project tests
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: python3 -m pytest -q tests/
+      - name: Build Debian package from source
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: dpkg-buildpackage -us -uc -b
+      - name: Verify release package and archive
+        run: |
+          dpkg-deb --info ../jatayu-driver-assistant_1.2.3-1_all.deb
+          test "$(dpkg-deb -f ../jatayu-driver-assistant_1.2.3-1_all.deb Package)" = "jatayu-driver-assistant"
+          test "$(dpkg-deb -f ../jatayu-driver-assistant_1.2.3-1_all.deb Version)" = "1.2.3-1"
+          if dpkg-deb --contents ../jatayu-driver-assistant_1.2.3-1_all.deb | grep -E 'polkit-1/actions|dbus-1/system-services|dbus-1/system.d'; then
+            echo "Unexpected privileged service or policy in Basic Edition package" >&2
+            exit 1
+          fi
+          git archive --format=zip --output=../jatayu-driver-assistant-v1.2.3-source.zip HEAD
+          unzip -t ../jatayu-driver-assistant-v1.2.3-source.zip | tail -n 1
+      - name: Publish GitHub prerelease with tested artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cat > /tmp/release-notes.md <<'EOF'
+          ## Jatayu Driver Assistant Basic v1.2.3 — Testing release
+
+          Read-only bilingual hardware information and driver recommendations for JatayuOS (Debian 13 / KDE Plasma 6).
+
+          ### Features
+          - PCI and USB hardware discovery and kernel driver information
+          - Read-only hardware diagnostics and conservative recommendations
+          - English and Hindi interface
+          - JSON hardware report export
+          - Built-in Help and About pages
+
+          ### Important
+          This application does **not** install, remove or repair drivers.
+          It is an early public testing release; validate it on JatayuOS before including it in an ISO.
+
+          ### Installation
+          Download the attached .deb and run:
+          ```bash
+          sudo apt install ./jatayu-driver-assistant_1.2.3-1_all.deb
+          ```
+
+          ### License
+          GPL-3.0-or-later. Full source is provided in the repository and attached ZIP.
+          EOF
+          gh release create v1.2.3 \
+            ../jatayu-driver-assistant_1.2.3-1_all.deb \
+            ../jatayu-driver-assistant-v1.2.3-source.zip \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "Jatayu Driver Assistant Basic v1.2.3" \
+            --notes-file /tmp/release-notes.md \
+            --prerelease
