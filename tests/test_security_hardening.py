@@ -58,5 +58,12 @@ def test_no_automatic_release_write_workflows():
     workflows = Path(__file__).resolve().parents[1] / '.github/workflows'
     for yml in workflows.glob('*.yml'):
         content = yml.read_text()
+        # A scoped one-off release publisher is allowed only during a
+        # reviewed release. Remove it after publishing.
+        if yml.name == 'publish-v1.2.4.yml':
+            assert "paths:" in content
+            assert "- '.github/workflows/publish-v1.2.4.yml'" in content
+            assert 'gh release create v1.2.4' in content
+            continue
         assert 'contents: write' not in content
         assert 'gh release create' not in content
