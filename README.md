@@ -16,12 +16,18 @@ Jatayu Driver Assistant is a bilingual (English/Hindi), read-only hardware inven
 
 **Limitations:** This program does **not** install, remove, upgrade, or repair drivers. A bound driver does not prove a device works; a package hint is not a verified installation recommendation. Some kernel logs require additional permissions. The Overview includes all detected entries, whereas Recommendations filters to physical PCI/USB devices, so counts can differ.
 
-## Install
+## Download and install
 
-Install the matching Debian package using your graphical package installer, or from its download directory:
+**Latest stable release: [Jatayu Driver Assistant Basic v1.2.4](https://github.com/jatayuos4u/jatayu-driver-assistant/releases/latest)**
+
+- **[Download Debian 13 package (.deb)](https://github.com/jatayuos4u/jatayu-driver-assistant/releases/download/v1.2.4/jatayu-driver-assistant_1.2.4-1_all.deb)**
+- [Download complete source code (.zip)](https://github.com/jatayuos4u/jatayu-driver-assistant/releases/download/v1.2.4/jatayu-driver-assistant-v1.2.4-source.zip)
+- [SHA-256 checksums](https://github.com/jatayuos4u/jatayu-driver-assistant/releases/download/v1.2.4/SHA256SUMS.txt)
+
+After downloading the .deb to your Downloads directory, install it with:
 
 ```sh
-sudo apt install ./jatayu-driver-assistant-basic_1.2.4-1_all.deb
+sudo apt install ~/Downloads/jatayu-driver-assistant_1.2.4-1_all.deb
 ```
 
 Start from the applications menu or run `jatayu-driver-assistant` **without sudo**.
