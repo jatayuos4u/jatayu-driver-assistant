@@ -41,7 +41,7 @@ jobs:
           git -c safe.directory="$GITHUB_WORKSPACE" archive --format=zip \
             --output=../jatayu-driver-assistant-v1.2.4-source.zip HEAD
           unzip -t ../jatayu-driver-assistant-v1.2.4-source.zip | tail -n 1
-          sha256sum "$package" ../jatayu-driver-assistant-v1.2.4-source.zip > ../SHA256SUMS.txt
+          (cd .. && sha256sum jatayu-driver-assistant_1.2.4-1_all.deb jatayu-driver-assistant-v1.2.4-source.zip > SHA256SUMS.txt)
           cat ../SHA256SUMS.txt
       - name: Publish stable release with checksums
         env:
