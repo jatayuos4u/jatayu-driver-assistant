@@ -1,6 +1,6 @@
 # Jatayu Driver Assistant — Basic Edition
 
-**Version:** 1.2.3  
+**Version:** 1.2.4  
 **Platform:** JatayuOS / Debian 13, KDE Plasma 6  
 **License:** GNU GPL v3 or later (`GPL-3.0-or-later`)
 
@@ -21,7 +21,7 @@ Jatayu Driver Assistant is a bilingual (English/Hindi), read-only hardware inven
 Install the matching Debian package using your graphical package installer, or from its download directory:
 
 ```sh
-sudo apt install ./jatayu-driver-assistant-basic_1.2.3-1_all.deb
+sudo apt install ./jatayu-driver-assistant-basic_1.2.4-1_all.deb
 ```
 
 Start from the applications menu or run `jatayu-driver-assistant` **without sudo**.
@@ -46,6 +46,10 @@ The package is written to the parent directory. Build dependencies and GUI runti
 ## License and contributions
 
 The project declares **GPL-3.0-or-later**; see [LICENSE](LICENSE) and [debian/copyright](debian/copyright). Third-party dependencies retain their respective licenses. Only submit contributions that you have the right to license under GPL-3.0-or-later. See [CONTRIBUTING.md](CONTRIBUTING.md) and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+## Report privacy
+
+JSON reports can contain hardware identifiers and diagnostic messages. Known MAC addresses, UUIDs and home-directory names are redacted on export, and files are created with owner-only permissions. Redaction is best effort: **inspect every report before sharing**.
 
 ## Security
 

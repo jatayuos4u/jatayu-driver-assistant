@@ -1,6 +1,7 @@
 """Read-only kernel firmware evidence correlation. Correlation is NOT proof of package need."""
 import re
 import subprocess
+from .safe_process import bounded_run
 from dataclasses import asdict, dataclass
 from .firmware import parse_firmware_failures
 
@@ -43,7 +44,7 @@ def correlate(hints, log_text):
     return results
 
 
-def inspect_evidence(hints, runner=subprocess.run):
+def inspect_evidence(hints, runner=bounded_run):
     """Read current-boot kernel journal, fail closed if inaccessible."""
     try:
         result = runner(['journalctl', '-k', '-b', '--no-pager', '-o', 'cat', '-n', '4000'],

@@ -8,15 +8,17 @@ jobs:
   pytest:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: '3.11'
-      - name: Install Python test dependencies
+      - name: Install test dependencies from controlled Debian repositories
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install pytest PySide6 setuptools
+          sudo apt-get update
+          sudo apt-get install -y python3-pytest python3-pyside6.qtcore python3-pyside6.qtwidgets python3-setuptools
       - name: Run automated tests
         env:
           QT_QPA_PLATFORM: offscreen
-        run: python -m pytest -q tests/
+        run: /usr/bin/python3 -m pytest -q tests/

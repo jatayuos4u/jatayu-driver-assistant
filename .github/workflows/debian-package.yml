@@ -1,0 +1,51 @@
+name: Debian 13 package security check
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  debian-package:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:trixie
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install build dependencies
+        run: |
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            build-essential dpkg-dev debhelper dh-python \
+            pybuild-plugin-pyproject python3-all python3-setuptools \
+            python3-pytest python3-pyside6.qtcore python3-pyside6.qtwidgets pciutils
+      - name: Run tests and build Debian package
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          python3 -m pytest -q tests/
+          dpkg-buildpackage -us -uc -b
+      - name: Verify unprivileged Basic Edition
+        run: |
+          package=../jatayu-driver-assistant_1.2.4-1_all.deb
+          test -f "$package"
+          test "$(dpkg-deb -f "$package" Package)" = jatayu-driver-assistant
+          test "$(dpkg-deb -f "$package" Version)" = 1.2.4-1
+          if dpkg-deb --contents "$package" | grep -E 'polkit-1/actions|dbus-1/system-services|dbus-1/system.d'; then
+            echo "Unexpected privileged service/policy in Basic Edition" >&2
+            exit 1
+          fi
+          dpkg-deb --info "$package"
+      - name: Stage tested Debian package
+        run: |
+          mkdir -p dist
+          cp ../jatayu-driver-assistant_1.2.4-1_all.deb dist/
+
+      - name: Upload v1.2.4 testing Debian package
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: jatayu-driver-assistant_1.2.4-1_all
+          path: dist/jatayu-driver-assistant_1.2.4-1_all.deb
+          if-no-files-found: error
+          retention-days: 14

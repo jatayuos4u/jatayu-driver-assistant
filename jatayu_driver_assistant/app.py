@@ -2,6 +2,7 @@
 import json
 import sys
 import platform
+from .private_export import write_private_json
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -36,6 +37,7 @@ class ElidedLabel(QLabel):
     def __init__(self, text='', parent=None):
         super().__init__(parent)
         self.full_text = text
+        self.setTextFormat(Qt.TextFormat.PlainText)
         self.setMinimumWidth(0)
         self.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred)
 
@@ -177,7 +179,7 @@ class Window(QMainWindow):
         self.side_info.setObjectName('sideInfo')
         side.addWidget(self.side_info)
         side.addSpacing(12)
-        self.version = self.label('v1.2.3  •  BASIC', 'version')
+        self.version = self.label('v1.2.4  •  BASIC', 'version')
         side.addWidget(self.version)
         outer.addWidget(self.sidebar)
 
@@ -216,7 +218,7 @@ class Window(QMainWindow):
         self.footer_status = self.label('', 'footer')
         footer.addWidget(self.footer_status)
         footer.addStretch()
-        self.footer_version = self.label('JATAYUOS  •  1.2.3', 'footer')
+        self.footer_version = self.label('JATAYUOS  •  1.2.4', 'footer')
         footer.addWidget(self.footer_version)
         content_layout.addLayout(footer)
         self.apply_theme()
@@ -227,6 +229,8 @@ class Window(QMainWindow):
     @staticmethod
     def label(text='', name=''):
         widget = QLabel(text)
+        widget.setTextFormat(Qt.TextFormat.PlainText)
+        widget.setTextFormat(Qt.TextFormat.PlainText)
         if name:
             widget.setObjectName(name)
         return widget
@@ -578,6 +582,7 @@ class Window(QMainWindow):
         dlg.setMinimumSize(660, 480)
         root = QVBoxLayout(dlg)
         heading = QLabel(('पैकेज समीक्षा: ' if hindi else 'Review package: ') + name)
+        heading.setTextFormat(Qt.TextFormat.PlainText)
         heading.setObjectName('sectionTitle')
         root.addWidget(heading)
         explanation = QLabel(('यह केवल एक पूर्वावलोकन है। कोई ड्राइवर इंस्टॉल नहीं होगा।' if hindi else
@@ -1137,10 +1142,12 @@ class Window(QMainWindow):
         dialog.resize(690, 550)
         layout = QVBoxLayout(dialog)
         heading = QLabel(('डिवाइस: ' if hi else 'Device: ') + hint.address)
+        heading.setTextFormat(Qt.TextFormat.PlainText)
         heading.setObjectName('sectionTitle')
         layout.addWidget(heading)
         for name, value in detail_fields(hint, hi, self._evidence_label(hint.address, hi)):
             field = QLabel(f'{name}: {value}')
+            field.setTextFormat(Qt.TextFormat.PlainText)
             field.setWordWrap(True)
             field.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
             layout.addWidget(field)
@@ -1150,6 +1157,7 @@ class Window(QMainWindow):
         layout.addWidget(warning)
         if hint.package_hint in ALLOWED:
             status_label = QLabel('पैकेज स्थिति: अभी जाँची नहीं गई' if hi else 'Package status: Not checked')
+            status_label.setTextFormat(Qt.TextFormat.PlainText)
             status_label.setWordWrap(True)
             layout.addWidget(status_label)
             check_button = QPushButton('पैकेज की स्थिति जाँचें (केवल पढ़ें)' if hi
@@ -1197,16 +1205,17 @@ class Window(QMainWindow):
             'jatayu-hardware-report.json', 'JSON files (*.json)')
         if filename:
             try:
-                Path(filename).write_text(json.dumps({**report_payload(self.hardware_hints),
+                write_private_json(filename, json.dumps({**report_payload(self.hardware_hints),
                                               'kernel_evidence_access': self.hardware_evidence_access,
                                               'kernel_evidence_verified': False,
+                                              'privacy_notice': 'Inspect the exported report before sharing; redaction is best effort.',
                                               'kernel_evidence_scope': 'current_boot_kernel_journal_last_4000_records',
                                               'kernel_evidence_interpretation': (
                                                   'No matching message in checked logs is not proof of device health or absence of firmware need.'
                                                   if self.language != 'hi' else
                                                   'जाँचे गए लॉग में संदेश न मिलना डिवाइस के सही होने या फ़र्मवेयर की आवश्यकता न होने का प्रमाण नहीं है।'),
                                               'kernel_evidence': [v.to_dict() for v in self.hardware_evidence_results.values()]},
-                                              indent=2, ensure_ascii=False), encoding='utf-8')
+                                              indent=2, ensure_ascii=False))
             except OSError as exc:
                 QMessageBox.warning(self, 'Export failed', str(exc))
 
@@ -1276,7 +1285,7 @@ class Window(QMainWindow):
             'jatayu-transaction-demo.json', 'JSON files (*.json)')
         if filename:
             try:
-                Path(filename).write_text(json.dumps(self.last_transaction_preview, indent=2), encoding='utf-8')
+                write_private_json(filename, json.dumps(self.last_transaction_preview, indent=2))
             except OSError as exc:
                 QMessageBox.warning(self, 'Export failed', str(exc))
 
@@ -1350,7 +1359,7 @@ class Window(QMainWindow):
             'jatayu-hardware-check.json', 'JSON files (*.json)')
         if filename:
             try:
-                Path(filename).write_text(json.dumps(self.last_test_result, indent=2), encoding='utf-8')
+                write_private_json(filename, json.dumps(self.last_test_result, indent=2))
             except OSError as exc:
                 QMessageBox.warning(self, 'Export failed', str(exc))
 
@@ -1415,7 +1424,7 @@ class Window(QMainWindow):
         app_col.addWidget(self.about_safety)
         self.source_button = QPushButton()
         self.source_button.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.source_button.clicked.connect(lambda: QDesktopServices.openUrl(QUrl('https://github.com/jatayuos4u')))
+        self.source_button.clicked.connect(lambda: QDesktopServices.openUrl(QUrl('https://github.com/jatayuos4u/jatayu-driver-assistant')))
         app_col.addWidget(self.source_button, alignment=Qt.AlignmentFlag.AlignLeft)
         self.about_layout.addWidget(self.about_app_card)
         self.about_layout.addStretch()
@@ -1436,6 +1445,7 @@ class Window(QMainWindow):
         column.setContentsMargins(6, 6, 14, 18)
         column.setSpacing(14)
         self.help_intro = QLabel()
+        self.help_intro.setTextFormat(Qt.TextFormat.PlainText)
         self.help_intro.setWordWrap(True)
         self.help_intro.setObjectName('muted')
         column.addWidget(self.help_intro)
@@ -1445,8 +1455,10 @@ class Window(QMainWindow):
             inner = QVBoxLayout(card)
             inner.setContentsMargins(22, 18, 22, 18)
             heading = QLabel()
+            heading.setTextFormat(Qt.TextFormat.PlainText)
             heading.setObjectName('sectionTitle')
             body = QLabel()
+            body.setTextFormat(Qt.TextFormat.PlainText)
             body.setWordWrap(True)
             body.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
             inner.addWidget(heading)
@@ -1489,8 +1501,8 @@ class Window(QMainWindow):
     def update_about(self):
         hi = self.language == 'hi'
         self.about_title.setText('जटायु ड्राइवर असिस्टेंट' if hi else 'Jatayu Driver Assistant')
-        self.about_text.setText(('संस्करण 1.2.3 • हार्डवेयर और फ़र्मवेयर जाँच के लिए ग्राफिकल ऐप।'
-            if hi else 'Version 1.2.3 • Graphical hardware diagnostics and firmware package previews.'))
+        self.about_text.setText(('संस्करण 1.2.4 • हार्डवेयर जाँच और सुरक्षित ड्राइवर सुझावों के लिए ऐप।'
+            if hi else 'Version 1.2.4 • Read-only hardware diagnostics and driver recommendations.'))
         self.about_os_title.setText('जटायुOS के बारे में' if hi else 'About JatayuOS')
         self.about_os_desc.setText(('JatayuOS एक Linux वितरण परियोजना है। यह ऐप Debian 13 और KDE Plasma 6 के लिए बनाया गया है।'
             if hi else 'JatayuOS is a Linux distribution project. This assistant is developed for its Debian 13 and KDE Plasma 6 environment.'))
@@ -1499,13 +1511,13 @@ class Window(QMainWindow):
         self.website_button.setText('वेबसाइट खोलें  ↗' if hi else 'Visit JatayuOS website  ↗')
         self.about_app_title.setText('एप्लिकेशन की जानकारी' if hi else 'Application information')
         self.about_app_info.setText((
-            'संस्करण: 1.2.3\nलक्ष्य: Debian 13 / KDE Plasma 6\nलाइसेंस: GPL-3.0-or-later\n'
-            'विकास: JatayuOS Project\nस्रोत: github.com/jatayuos4u'
-            if hi else 'Version: 1.2.3\nTarget: Debian 13 / KDE Plasma 6\n'
-            'License: GPL-3.0-or-later\nDeveloper: JatayuOS Project\nSource: github.com/jatayuos4u'))
-        self.about_safety.setText(('सुरक्षा: यह Alpha केवल जाँच और सिमुलेशन करता है; ड्राइवर इंस्टॉल नहीं करता।'
-            if hi else 'Safety: This alpha provides diagnostics and simulations only; it cannot install or repair drivers.'))
-        self.source_button.setText('GitHub संगठन खोलें  ↗' if hi else 'Visit GitHub organization  ↗')
+            'संस्करण: 1.2.4\nलक्ष्य: Debian 13 / KDE Plasma 6\nलाइसेंस: GPL-3.0-or-later\n'
+            'विकास: JatayuOS Project\nस्रोत: github.com/jatayuos4u/jatayu-driver-assistant'
+            if hi else 'Version: 1.2.4\nTarget: Debian 13 / KDE Plasma 6\n'
+            'License: GPL-3.0-or-later\nDeveloper: JatayuOS Project\nSource: github.com/jatayuos4u/jatayu-driver-assistant'))
+        self.about_safety.setText(('सुरक्षा: बेसिक संस्करण केवल जानकारी दिखाता है; ड्राइवर इंस्टॉल या रिपेयर नहीं करता।'
+            if hi else 'Safety: Basic Edition is read-only; it cannot install or repair drivers.'))
+        self.source_button.setText('GitHub रिपॉजिटरी खोलें  ↗' if hi else 'View GitHub repository  ↗')
 
     def t(self, key):
         return tr(self.language, key)
@@ -1670,16 +1682,17 @@ class Window(QMainWindow):
                                                    'jatayu-hardware-report.json', 'JSON (*.json)')
         if not filename:
             return
-        payload = {'application': 'Jatayu Driver Assistant', 'version': '1.2.3',
+        payload = {'application': 'Jatayu Driver Assistant', 'version': '1.2.4',
                    'generated_utc': datetime.now(timezone.utc).isoformat(),
                    'disclaimer': tr('en', 'disclaimer'),
                    'summary': summarize(self.devices),
                    'devices': [d.as_dict() for d in self.devices],
                    'findings': [f.as_dict() for f in analyze(self.devices)],
                    'firmware_evidence': [f.as_dict() for f in self.firmware_findings],
-                   'firmware_access_note': self.firmware_note}
+                   'firmware_access_note': self.firmware_note,
+                   'privacy_notice': 'Identifiers are redacted where recognized. Inspect the report before sharing.'}
         try:
-            Path(filename).write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+            write_private_json(filename, json.dumps(payload, indent=2, ensure_ascii=False) + '\n')
             self.footer_status.setText('●  ' + self.t('saved'))
         except OSError as exc:
             QMessageBox.warning(self, self.t('error'), str(exc))

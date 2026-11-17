@@ -2,6 +2,7 @@
 from dataclasses import dataclass, asdict
 from pathlib import Path
 import subprocess
+from .safe_process import bounded_run
 import re
 
 SYS = Path('/sys')
@@ -21,7 +22,7 @@ class Device:
 
 def run_command(args, timeout=8):
     try:
-        result = subprocess.run(args, capture_output=True, text=True, timeout=timeout, check=False)
+        result = bounded_run(args, capture_output=True, text=True, timeout=timeout, check=False)
         return result.stdout if result.returncode == 0 else ''
     except (OSError, subprocess.TimeoutExpired):
         return ''

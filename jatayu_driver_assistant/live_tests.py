@@ -1,13 +1,14 @@
 """Unprivileged, read-only checks of actual local hardware. Never infer health from missing logs."""
 from pathlib import Path
 import subprocess
+from .safe_process import bounded_run
 
 CATEGORIES = ('wifi', 'graphics', 'network', 'audio', 'bluetooth')
 
 
 def _command(argv):
     try:
-        result = subprocess.run(argv, capture_output=True, text=True, timeout=5, check=False)
+        result = bounded_run(argv, capture_output=True, text=True, timeout=5, check=False)
     except (FileNotFoundError, OSError, subprocess.TimeoutExpired) as exc:
         return None, str(exc)
     return result.returncode, (result.stdout or result.stderr).strip()[:6000]
