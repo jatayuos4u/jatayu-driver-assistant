@@ -37,10 +37,15 @@ jobs:
             exit 1
           fi
           dpkg-deb --info "$package"
+      - name: Stage tested Debian package
+        run: |
+          mkdir -p dist
+          cp ../jatayu-driver-assistant_1.2.4-1_all.deb dist/
+
       - name: Upload v1.2.4 testing Debian package
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: jatayu-driver-assistant_1.2.4-1_all
-          path: ../jatayu-driver-assistant_1.2.4-1_all.deb
+          path: dist/jatayu-driver-assistant_1.2.4-1_all.deb
           if-no-files-found: error
           retention-days: 14
