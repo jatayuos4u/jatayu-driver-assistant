@@ -1,0 +1,88 @@
+name: Publish reviewed v1.2.4 stable release
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-v1.2.4.yml'
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:trixie
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install official Debian build and test tools
+        run: |
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            ca-certificates git gh unzip build-essential dpkg-dev debhelper dh-python \
+            pybuild-plugin-pyproject python3-all python3-setuptools \
+            python3-pytest python3-pyside6.qtcore python3-pyside6.qtwidgets pciutils
+      - name: Test and build release
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          python3 -m pytest -q tests/
+          dpkg-buildpackage -us -uc -b
+      - name: Validate package and prepare complete source archive
+        run: |
+          set -eu
+          package=../jatayu-driver-assistant_1.2.4-1_all.deb
+          test "$(dpkg-deb -f "$package" Package)" = jatayu-driver-assistant
+          test "$(dpkg-deb -f "$package" Version)" = 1.2.4-1
+          if dpkg-deb --contents "$package" | grep -E 'polkit-1/actions|dbus-1/system-services|dbus-1/system.d'; then
+            echo "Unexpected privileged service or policy in Basic package" >&2
+            exit 1
+          fi
+          git -c safe.directory="$GITHUB_WORKSPACE" archive --format=zip \
+            --output=../jatayu-driver-assistant-v1.2.4-source.zip HEAD
+          unzip -t ../jatayu-driver-assistant-v1.2.4-source.zip | tail -n 1
+          sha256sum "$package" ../jatayu-driver-assistant-v1.2.4-source.zip > ../SHA256SUMS.txt
+          cat ../SHA256SUMS.txt
+      - name: Publish stable release with checksums
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          cat > /tmp/release-notes.md <<'EOF'
+          ## Jatayu Driver Assistant Basic v1.2.4
+
+          Stable, security-hardened read-only hardware information and driver recommendations for JatayuOS (Debian 13 and KDE Plasma 6).
+
+          ### Improvements
+          - Bounded subprocess output and enforced diagnostic timeouts
+          - Plain-text display of hardware-derived labels
+          - Private (mode 0600), symlink-safe JSON exports with best-effort identifier redaction
+          - Hardened CI supply chain and additional regression coverage
+          - English and Hindi interface, read-only hardware diagnostics and conservative recommendations
+
+          **Security scope:** No driver installation, removal, repair or privileged service is enabled. Report redaction is best-effort; inspect exported JSON before sharing.
+
+          ### Install
+          Download the .deb from the assets below and run:
+          ```bash
+          sudo apt install ./jatayu-driver-assistant_1.2.4-1_all.deb
+          ```
+
+          ### Integrity
+          Check SHA256SUMS.txt against downloaded assets:
+          ```bash
+          sha256sum -c SHA256SUMS.txt
+          ```
+
+          **License:** GNU GPL-3.0-or-later.
+          **Source:** https://github.com/jatayuos4u/jatayu-driver-assistant
+          EOF
+          gh release create v1.2.4 \
+            ../jatayu-driver-assistant_1.2.4-1_all.deb \
+            ../jatayu-driver-assistant-v1.2.4-source.zip \
+            ../SHA256SUMS.txt \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "Jatayu Driver Assistant Basic v1.2.4" \
+            --notes-file /tmp/release-notes.md \
+            --latest
