@@ -38,8 +38,17 @@ jobs:
             echo "Unexpected privileged service or policy in Basic package" >&2
             exit 1
           fi
-          git -c safe.directory="$GITHUB_WORKSPACE" archive --format=zip \
-            --output=../jatayu-driver-assistant-v1.2.4-source.zip HEAD
+          python3 - <<'PY'
+          from pathlib import Path
+          import zipfile
+          root = Path.cwd()
+          output = root.parent / 'jatayu-driver-assistant-v1.2.4-source.zip'
+          excluded = {'.git', '.pybuild', '.pytest_cache', '__pycache__', 'build', 'dist', '.debhelper', 'jatayu-driver-assistant'}
+          with zipfile.ZipFile(output, 'w', compression=zipfile.ZIP_DEFLATED) as archive:
+              for file in root.rglob('*'):
+                  if file.is_file() and not any(part in excluded or part.endswith('.egg-info') for part in file.relative_to(root).parts):
+                      archive.write(file, file.relative_to(root).as_posix())
+          PY
           unzip -t ../jatayu-driver-assistant-v1.2.4-source.zip | tail -n 1
           (cd .. && sha256sum jatayu-driver-assistant_1.2.4-1_all.deb jatayu-driver-assistant-v1.2.4-source.zip > SHA256SUMS.txt)
           cat ../SHA256SUMS.txt
