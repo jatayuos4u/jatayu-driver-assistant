@@ -6,6 +6,7 @@ No installation, shell invocation, or third-party downloads.
 from dataclasses import dataclass, asdict
 import re
 import subprocess
+from .safe_process import bounded_run
 
 # Only standard Debian firmware packages. These are hints, not automatic matches.
 FAMILY_PACKAGES = {
@@ -54,7 +55,7 @@ def parse_firmware_failures(log_text):
     return result[:30]
 
 
-def package_available(package, runner=subprocess.run):
+def package_available(package, runner=bounded_run):
     """Check only an internally selected Debian package name, not arbitrary input."""
     if package not in set(FAMILY_PACKAGES.values()):
         return False
@@ -66,7 +67,7 @@ def package_available(package, runner=subprocess.run):
         return False
 
 
-def inspect_firmware(runner=subprocess.run):
+def inspect_firmware(runner=bounded_run):
     """Read kernel journal without privileges; return reason if access is denied."""
     try:
         proc = runner(['journalctl', '-k', '-b', '--no-pager', '-o', 'cat', '-n', str(MAX_LINES)],

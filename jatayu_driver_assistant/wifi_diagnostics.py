@@ -2,6 +2,7 @@
 from pathlib import Path
 import re
 import subprocess
+from .safe_process import bounded_run
 
 NET_ROOT = Path('/sys/class/net')
 RFKILL_ROOT = Path('/sys/class/rfkill')
@@ -38,7 +39,7 @@ def inspect_rfkill(root=RFKILL_ROOT, limit=64):
 def inspect_networkmanager(timeout=3, runner=None):
     """Query local NetworkManager via nmcli, with fixed arguments and a deadline."""
     if runner is None:
-        runner = subprocess.run
+        runner = bounded_run
     try:
         completed = runner(['nmcli', '--terse', '--escape', 'yes', '--fields',
                             'DEVICE,TYPE,STATE', 'device', 'status'],
@@ -124,7 +125,7 @@ def classify_kernel_firmware_line(line):
 def inspect_wifi_firmware_messages(runner=None, timeout=5, max_lines=2000):
     """Inspect current-boot journal only as current user; never elevate privileges."""
     if runner is None:
-        runner = subprocess.run
+        runner = bounded_run
     limit = min(max(1, max_lines), 2000)
     try:
         result = runner(['journalctl', '--boot', '0', '--kernel', '--no-pager',

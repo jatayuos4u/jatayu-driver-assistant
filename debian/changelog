@@ -1,3 +1,12 @@
+jatayu-driver-assistant (1.2.4-1) unstable; urgency=medium
+
+  * Security hardening: bound diagnostic subprocess output and runtime.
+  * Render device labels as plain text and protect diagnostic JSON exports.
+  * Remove obsolete automatic release-publishing workflows from Basic Edition.
+  * Pin CI dependencies and add security regression tests.
+
+ -- JatayuOS Project <maintainers@jatayuos.in>  Tue, 17 Nov 2026 10:00:00 +0530
+
 jatayu-driver-assistant (1.2.3-1) unstable; urgency=medium
 
   * Basic Edition packaging: do not install legacy D-Bus services or Polkit policy.

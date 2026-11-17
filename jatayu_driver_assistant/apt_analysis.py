@@ -2,6 +2,7 @@
 from dataclasses import dataclass, asdict
 import re
 import subprocess
+from .safe_process import bounded_run
 from .recommendations import ALLOWED, PACKAGE_RE
 
 MAX_OUTPUT = 65536
@@ -59,7 +60,7 @@ def analyze_output(package, output, returncode):
                       tuple(operations), tuple(dict.fromkeys(warnings)), returncode)
 
 
-def installed_version(package, *, runner=subprocess.run):
+def installed_version(package, *, runner=bounded_run):
     """Query local dpkg database only; unknown results never imply absence."""
     if not isinstance(package, str) or package not in ALLOWED or not PACKAGE_RE.fullmatch(package):
         raise ValueError('Package is not allowlisted')
@@ -79,7 +80,7 @@ def installed_version(package, *, runner=subprocess.run):
     return 'unknown', None
 
 
-def inspect_package(package, *, runner=subprocess.run, dpkg_runner=subprocess.run):
+def inspect_package(package, *, runner=bounded_run, dpkg_runner=bounded_run):
     """Combine local dpkg status with simulation; never infer a hardware requirement."""
     state, version = installed_version(package, runner=dpkg_runner)
     preview = simulate_package(package, runner=runner)
@@ -95,7 +96,7 @@ def inspect_package(package, *, runner=subprocess.run, dpkg_runner=subprocess.ru
     return data
 
 
-def simulate_package(package, *, timeout=15, runner=subprocess.run):
+def simulate_package(package, *, timeout=15, runner=bounded_run):
     """Run apt-get simulation without privilege, shell, or arbitrary arguments."""
     if not isinstance(package, str) or package not in ALLOWED or not PACKAGE_RE.fullmatch(package):
         raise ValueError('Package is not allowlisted')

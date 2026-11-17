@@ -5,6 +5,7 @@ No installs, no root, no shell, no network operations. Package names are fixed.
 from dataclasses import dataclass
 import re
 import subprocess
+from .safe_process import bounded_run
 from .firmware import FAMILY_PACKAGES
 
 ALLOWED = frozenset(FAMILY_PACKAGES.values())
@@ -26,7 +27,7 @@ def parse_policy(text):
             candidate.group(1) if candidate else '(none)')
 
 
-def inspect_packages(findings, runner=subprocess.run):
+def inspect_packages(findings, runner=bounded_run):
     """Show only allowlisted packages supported by observed firmware log evidence."""
     counts = {}
     for item in findings:
@@ -54,7 +55,7 @@ def parse_simulation(text):
     return changes[:100]
 
 
-def simulate_install(name, runner=subprocess.run):
+def simulate_install(name, runner=bounded_run):
     """Simulation only; never execute an actual install."""
     if name not in ALLOWED or not PACKAGE_RE.fullmatch(name):
         raise ValueError('Package is not on the trusted firmware allowlist')
@@ -97,7 +98,7 @@ def assess_transaction(changes, requested_package):
     return not problems, problems
 
 
-def preview_plan(name, runner=subprocess.run):
+def preview_plan(name, runner=bounded_run):
     """Produce an explainable, unprivileged plan. Does not execute APT changes."""
     ok, changes, message = simulate_install(name, runner=runner)
     safe, issues = assess_transaction(changes, name) if ok else (False, [message])
